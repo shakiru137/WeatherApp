@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      {% if weather %} Weather in {{ weather.name }} {% else %} Weather App {%
+      endif %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🌤️ Weather App</h1>
+
+      <!-- Search Form -->
+      <form method="POST" class="search-form">
+        <input
+          type="text"
+          name="city"
+          placeholder="Enter city name..."
+          required
+        />
+        <button type="submit">Search</button>
+      </form>
+
+      <!-- Error Message -->
+      {% if error %}
+      <div class="error-msg">{{ error }}</div>
+      {% endif %}
+
+      <!-- Weather Info -->
+      {% if weather %}
+      <div class="weather-box">
+        <h2 class="city-title">
+          {{ weather.name }}, {{ weather.sys.country }}
+        </h2>
+
+        <div class="section fade">
+          <strong>Coordinates:</strong> ({{ weather.coord.lat }}, {{
+          weather.coord.lon }})
+        </div>
+
+        <div class="section fade delay-1">
+          <strong>Condition:</strong> {{ weather.weather[0].main }} ({{
+          weather.weather[0].description }})
+          <img
+            class="weather-icon"
+            src="http://openweathermap.org/img/wn/{{ weather.weather[0].icon }}@2x.png"
+            alt="Weather icon"
+          />
+        </div>
+
+        <div class="section fade delay-2">
+          <strong>Temperature:</strong>
+          <span class="temp">{{ weather.main.temp }} °C</span>
+          <small>(Feels like {{ weather.main.feels_like }} °C)</small>
+        </div>
+
+        <div class="section fade delay-3">
+          <strong>Humidity:</strong> {{ weather.main.humidity }}% |
+          <strong>Pressure:</strong> {{ weather.main.pressure }} hPa
+        </div>
+
+        <div class="section fade delay-4">
+          <strong>Visibility:</strong> {{ weather.visibility }} meters
+        </div>
+
+        <div class="section fade delay-5">
+          <strong>Wind:</strong> {{ weather.wind.speed }} m/s at {{
+          weather.wind.deg }}°
+        </div>
+
+        <div class="section fade delay-6">
+          <strong>Cloudiness:</strong> {{ weather.clouds.all }}%
+        </div>
+
+        {% if weather.main.sea_level %}
+        <div class="section fade delay-7">
+          <strong>Sea Level:</strong> {{ weather.main.sea_level }} hPa |
+          <strong>Ground Level:</strong> {{ weather.main.grnd_level }} hPa
+        </div>
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+  </body>
+</html>
